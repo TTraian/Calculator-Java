@@ -9,7 +9,7 @@ public class Design extends JFrame {
 	private JButton Suma, Produs, Exit;
 	private JTextField rezultat;
 	private JLabel label_input[], label_rezultat;
-	private int N = 2;
+	private int N = 4;
 
 	public Design() {
 		setTitle("Calculator");
@@ -20,8 +20,8 @@ public class Design extends JFrame {
 		label_input = new JLabel[N];
 		JPanel jp1 = new JPanel();
 		for (int i = 0; i < N; i++) {
-			input[i] = new JTextField();
-			label_input[i] = new JLabel((char) 0x0061 + i + ""); // noteaza
+			input[i] = new JTextField(7);
+			label_input[i] = new JLabel((char) (0x0061 + i) + ""); // noteaza
 																	// fiecare
 																	// input cu
 																	// necunoscute
@@ -32,6 +32,9 @@ public class Design extends JFrame {
 
 		// Result panel
 		JPanel jp2 = new JPanel();
+		label_rezultat = new JLabel("Rezultat");
+		rezultat = new JTextField(7);
+		rezultat.setEditable(false);
 		jp2.add(label_rezultat);
 		jp2.add(rezultat);
 
@@ -53,13 +56,25 @@ public class Design extends JFrame {
 
 		Container c = getContentPane();
 		c.add(jp, "Center");
+
+		sumaAction sa = new sumaAction();
+		Suma.addActionListener(sa);
+		productAction pa = new productAction();
+		Produs.addActionListener(pa);
+		exitAction ea = new exitAction();
+		Exit.addActionListener(ea);
+
 	}
 
 	class sumaAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			int s = 0;
 			for (int i = 0; i < N; i++) {
-				s += Integer.parseInt(input[i].getText());
+				if (!input[i].getText().equals("")) {
+					if (input[i].getText().matches("[0-9]+")) {
+						s += Integer.parseInt(input[i].getText());
+					}
+				}
 			}
 			rezultat.setText(s + "");
 		}
@@ -69,7 +84,11 @@ public class Design extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			int p = 1;
 			for (int i = 0; i < N; i++) {
-				p *= Integer.parseInt(input[i].getText());
+				if (!input[i].getText().equals("")) {
+					if (input[i].getText().matches("[0-9]+")) {
+						p *= Integer.parseInt(input[i].getText());
+					}
+				}
 			}
 			rezultat.setText(p + "");
 		}
